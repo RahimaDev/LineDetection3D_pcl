@@ -217,10 +217,16 @@ void PlaneDetection::saliencyFeatureEstimation(std::map<pcl::octree::LeafNodeKey
 //     std::cout << "leafCount = " << leafCount << std::endl;
     
     ///< A.1b feature estimation
-    pcl::octree::OctreePointCloudVoxel<PointT>::LeafNodeIterator it = octree_->leaf_begin();
+    //pcl::octree::OctreePointCloudVoxel<PointT>::LeafNodeIterator it = octree_->leaf_begin();
     unsigned int traversCounter = 0;
-    for (; it != octree_->leaf_end(); ++it)
-    {
+   // for (; it != octree_->leaf_end(); ++it)
+   for (auto it =  octree_->begin(), it_end =  octree_->end(); it!=it_end; ++it)
+  {
+    
+        const OctreeNode* node = it.getCurrentOctreeNode ();
+     if (node->getNodeType () == LEAF_NODE)
+     {
+    
 	VoxelInfo voxelInfo;
 	
 	// construct voxel points index vector
@@ -343,7 +349,7 @@ void PlaneDetection::saliencyFeatureEstimation(std::map<pcl::octree::LeafNodeKey
 	cellInfos.insert(std::pair<pcl::octree::LeafNodeKey, VoxelInfo>(keyArg, voxelInfo));
 	
 	traversCounter++;
-    }
+    }}
     std::cout << "traversCounter is: " << traversCounter << ", while cellInfos size is: " << cellInfos.size() << std::endl;
 }
 

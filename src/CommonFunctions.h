@@ -6,32 +6,46 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Core>
-
+#include <pcl/pcl_macros.h> 
 #include <pcl/common/time.h>
 #include <pcl/console/parse.h>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
 #include <pcl/visualization/pcl_visualizer.h>
-
-#include <pcl/io/pcd_io.h>
+#include <pcl/point_types.h>
+#include <pcl/point_traits.h>
+#include <pcl/for_each_type.h>
+#include <pcl/io/ply_io.h>
 #include <pcl/common/transforms.h>
-
+#include <pcl/octree/octree_pointcloud.h>
 #include <pcl/features/normal_3d.h>
-
+#include <pcl/pcl_config.h>
 #include <pcl/kdtree/kdtree.h>
 #include <pcl/kdtree/kdtree_flann.h> // this must before opencv
 #include <pcl/octree/octree.h>
-#include <pcl/octree/octree_impl.h>
+#include <pcl/point_types.h>
+#include <pcl/point_traits.h>
+#include <pcl/for_each_type.h>
+#include <pcl/point_cloud.h>
+#include <pcl/octree/octree_search.h>
 
+#include <pcl/point_types.h>
+#include <pcl/point_traits.h>
+#include <pcl/for_each_type.h>
 #include <pcl/filters/random_sample.h>
 #include <pcl/segmentation/region_growing.h>
-
+#include <pcl/common/point_tests.h>
 #include <OctreePointcloudVoxel.hpp>
-
+#include <pcl/octree/octree_base.h>
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <math.h>
 
+#include <pcl/octree/octree_base.h>
+#include <pcl/octree/octree.h>
+#include <pcl/octree/octree_impl.h>
+#include <pcl/octree/octree_pointcloud.h>
+#include <pcl/octree/octree_pointcloud_adjacency.h>
 #include "nanoflann.hpp"
 #include "utils.h"
 

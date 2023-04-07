@@ -1,5 +1,5 @@
 #include "CommonFunctions.h"
-  
+# define pcl_isfinite(x) std::isfinite(x)  
 using namespace cv;
 using namespace std;
 

@@ -47,14 +47,14 @@ void readDataFromTXTFile( std::string filepath, pcl::PointCloud<PointT>::Ptr clo
     std::cout << "Total num of points: " << cloud->size() << "\n";
 }
 
-void readDataFromPCDFile( std::string filepath, pcl::PointCloud<PointT>::Ptr cloud )
+void readDataFromPLYFile( std::string filepath, pcl::PointCloud<PointT>::Ptr cloud )
 {
     cout<<"Reading data ..."<<endl;
 
     // 1. read in point data
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_cloud(new pcl::PointCloud<pcl::PointXYZ>());
-    if (pcl::io::loadPCDFile(filepath, *pcl_cloud) == -1) {
-	PCL_ERROR("Couldn't read pcd file.\n");
+    if (pcl::io::loadPLYFile(filepath, *pcl_cloud) == -1) {
+	PCL_ERROR("Couldn't read ply file.\n");
 	return ;
     }
 
@@ -132,23 +132,23 @@ void writeOutLines( string filePath, std::vector<std::vector<cv::Point3d> > &lin
 int main(int argc, char** argv) 
 {
     if (argc != 4) {
-	std::cout << "usage: ./main -fileData -fileOut -fileType ('txt' or 'pcd')" << std::endl;
+	std::cout << "usage: ./main -fileData -fileOut -fileType ('txt' or 'ply')" << std::endl;
 	return -1;
     }
     string fileData = string(argv[1]);
     string fileOut  = string(argv[2]);
-    string fileType = string(argv[3]);
+   // string fileType = string(argv[3]);
 
     // read in data
     pcl::PointCloud<PointT>::Ptr pointData(new pcl::PointCloud<PointT>()); 
-    if (fileType == "txt")
-	readDataFromTXTFile( fileData, pointData );
-    else if (fileType == "pcd") {
-	readDataFromPCDFile( fileData, pointData );
-    }
+    //if (fileType == "txt")
+	//readDataFromTXTFile( fileData, pointData );
+    //else if (fileType == "ply") {
+	readDataFromPLYFile( fileData, pointData );
+    //}
 
     /// random downsize
-    int maxSize = 500000;
+    int maxSize =9426486;
     if (pointData->size() > maxSize) {
 	pcl::RandomSample<PointT> rs;
 	rs.setInputCloud(pointData);
@@ -164,7 +164,7 @@ int main(int argc, char** argv)
     test.runPlaneExtraction_OBR(pointData, 30.0, 0.05, 30);
     std::printf("test done.\n")*/;
     
-    int k = 30;
+    int k = 8;
     LineDetection3D detector;
     std::vector<PLANE> planes;
     std::vector<std::vector<cv::Point3d> > lines;
@@ -175,7 +175,7 @@ int main(int argc, char** argv)
     
     writeOutPlanes( fileOut, planes, detector.scale );
     writeOutLines( fileOut, lines, detector.scale );
-    pcl::io::savePCDFile(fileOut + "planes.pcd", *detector.planePoints);
+    pcl::io::savePLYFile(fileOut + "planes.ply", *detector.planePoints);
 
     pcl::visualization::PCLVisualizer viewer("PCL Viewer");
 
@@ -215,7 +215,7 @@ int main(int argc, char** argv)
 	pcl::PointCloud<pcl::Normal>::Ptr norm_cloud(new pcl::PointCloud<pcl::Normal>());
 	norm_cloud->push_back(detector.planeNormals->points[i_segment]);
 	
-	viewer.addPointCloud(colored_cloud, "cloud_plane_" + to_string(i_segment));
+	/*viewer.addPointCloud(colored_cloud, "cloud_plane_" + to_string(i_segment));
 	viewer.addPointCloud(cen_cloud, "cloud_centroid_" + to_string(i_segment));
 	viewer.addPointCloudNormals<pcl::PointXYZ, pcl::Normal>(cen_cloud, norm_cloud, 5, 0.5, "cloud_normals_" + to_string(i_segment));
 	
@@ -224,7 +224,7 @@ int main(int argc, char** argv)
 		viewer.spinOnce();
 	} else {
 	    viewer.spinOnce(1000);
-	}
+	}*/
     }
     
     
